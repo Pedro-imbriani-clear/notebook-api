@@ -1,8 +1,8 @@
 class Contact < ApplicationRecord
-
   # Associations
   belongs_to :kind #, optional: true
   has_many :phones
+  accepts_nested_attributes_for :phones, allow_destroy: true
 
   def as_json(options={})
     h = super(options)
@@ -23,7 +23,7 @@ class Contact < ApplicationRecord
   # end
 
   # def author
-  #   "Jackson Pires"
+  #   "Pedro imbriani"
   # end
 
   # def kind_description
