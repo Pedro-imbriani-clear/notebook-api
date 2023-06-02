@@ -9,8 +9,9 @@ module V1
       page_number = params[:page].try(:[], :number)
       per_page = params[:page].try(:[], :size)
 
-      @contacts = Contact.all.page(page_number).per(per_page)
+      @contacts = Contact.all.page(5).per(per_page)
 
+      expires_in 30.seconds, public: true
       render  json: @contacts #, methods: :birthdate_br #[:hello, :i18n]
       # paginate json: @contacts #, methods: :birthdate_br #[:hello, :i18n]
     end
