@@ -32,6 +32,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
  gem 'jwt'
 
+gem 'versionist'
+
  gem 'active_model_serializers', '~> 0.10.0'
 
 group :development, :test do
