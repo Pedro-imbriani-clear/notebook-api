@@ -1,16 +1,21 @@
-
+module V1
   class ContactsController < ApplicationController
     before_action :set_contact, only: [:show, :update, :destroy]
 
     # GET /contacts
     def index
-      @contact = Contact.all
-      render json: @contacts # , methods: :birthdate_br
+      page_number = params[:page].try(:[], :number)
+      per_page = params[:page].try(:[], :size)
+
+      @contacts = Contact.all.page(page_number).per(per_page)
+
+      render  json: @contacts #, methods: :birthdate_br #[:hello, :i18n]
+      # paginate json: @contacts #, methods: :birthdate_br #[:hello, :i18n]
     end
 
     # GET /contacts/1
     def show
-      render json: @contact, include: [:kind, :address, :phones] # , meta:{ author: "Pedro Imbriani"} # , include: [:kind, :phones, :address]
+      render json: @contact, include: [:kind, :address, :phones] #, meta: { author: "Jackson Pires" }   #, include: [:kind, :phones, :address]
     end
 
     # POST /contacts
@@ -18,7 +23,7 @@
       @contact = Contact.new(contact_params)
 
       if @contact.save
-        render json: @contact, include: [:kind, :phones, :address], status: :created, location: @contact
+        render json: @contact, include: [:kind, :phones, :address],  status: :created, location: @contact
       else
         render json: @contact.errors, status: :unprocessable_entity
       end
@@ -48,10 +53,10 @@
       def contact_params
         # params.require(:contact).permit(
         #   :name, :email, :birthdate, :kind_id,
-        #    phones_attributes:  [:id, :number, :_destroy],
-        #    address_attributes:  [:id, :street, :city]
-        #   )
+        #   phones_attributes: [:id, :number, :_destroy],
+        #   address_attributes: [:id, :street, :city]
+        # )
         ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       end
   end
-
+end
